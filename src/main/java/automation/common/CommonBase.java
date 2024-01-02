@@ -1,6 +1,10 @@
 package automation.common;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -138,5 +142,26 @@ public class CommonBase {
 		driver.manage().window().maximize();
 		driver.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 		return driver;
+	}
+	public String getWeekWithSpecialFormat() {
+		// Get calendar set to current date and time
+		Calendar c = GregorianCalendar.getInstance();
+		// Set the calendar to monday of the current week
+		c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+		System.out.println("Current week = " + Calendar.DAY_OF_WEEK);
+		// Print dates of the current week starting on Monday
+		SimpleDateFormat df = new SimpleDateFormat("MMM d, yyyy", Locale.getDefault());
+		String startDate = "", endDate = "";
+		startDate = df.format(c.getTime());
+		c.add(Calendar.DATE, 6);
+		endDate = df.format(c.getTime());
+		System.out.println("Start Date = " + startDate);
+		// cáº¯t chuá»—i endDate Ä‘á»ƒ chá»‰ láº¥y ra ngÃ y
+		System.out.println("Day of end Date = " + endDate.subSequence(4, 6));
+		String expected = new StringBuilder().append(startDate.substring(0, 6)).append(" - ")
+				.append(endDate.subSequence(4, 6))
+				.append(startDate.substring(6, 12)).toString();
+		System.out.println("Expected weekWithSpecialFormat: " + expected);
+		return expected;
 	}
 }
